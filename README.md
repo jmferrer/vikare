@@ -6,6 +6,10 @@ The goal is to provide people who are alone with a differential-drive robot equi
 
 It should also be able to converse with the person it is caring for, detecting signs of depression that could potentially lead to suicide.
 
+## extended blog article
+
+[link](http://elmanytas.es/?q=node/377)
+
 ## architecture
 
 We have three main components:
