@@ -1,0 +1,7 @@
+{
+    "wifi": {
+        "essid": "wifissid",
+        "password": "wifipassword"
+    },
+    "serviceUrl": "http://vikare.192-168-43-130.nip.io"
+}

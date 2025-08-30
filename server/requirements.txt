@@ -1,0 +1,6 @@
+Flask==3.1.1
+PyYAML==6.0.2
+ollama==0.5.1
+opencv-python-headless==4.11.0.86
+Pillow
+langchain-ollama

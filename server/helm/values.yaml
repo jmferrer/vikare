@@ -1,0 +1,27 @@
+image:
+  repository: localhost:32000/vikare
+  tag: latest
+  pullPolicy: Always
+
+pvc:
+  enabled: true
+  storageClassName: "microk8s-hostpath"
+  accessModes:
+    - ReadWriteOnce
+  size: 1Gi
+
+ingress:
+  enabled: true
+  className: nginx
+  hostname: vikare.127-0-0.1.nip.io
+  tls: false
+
+ollamaHost: http://ollama.ollama:11434
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

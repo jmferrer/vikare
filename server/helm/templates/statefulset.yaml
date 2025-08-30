@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: vikare
+spec:
+  serviceName: vikare-headless
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vikare
+  template:
+    metadata:
+      labels:
+        app: vikare
+    spec:
+      containers:
+        - name: llm
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: OLLAMA_HOST
+            value: "{{ .Values.ollamaHost }}"
+          command:
+          - /bin/bash
+          - -c
+#          - sleep infinity
+          - python /usr/local/src/app/llm.py
+          volumeMounts:
+            - name: data
+              mountPath: /usr/local/src/data
+
+        - name: image
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+          - /bin/bash
+          - -c
+          - python /usr/local/src/app/image.py
+          volumeMounts:
+            - name: data
+              mountPath: /usr/local/src/data
+
+        - name: sensors
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+          - /bin/bash
+          - -c
+          - python /usr/local/src/app/sensors.py
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: data
+              mountPath: /usr/local/src/data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: "{{ .Values.pvc.storageClassName }}"
+        resources:
+          requests:
+            storage: "{{ .Values.pvc.size }}"
