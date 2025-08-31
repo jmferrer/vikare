@@ -543,22 +543,22 @@ def execute_instructions(instructions):
 
 #     if "steps" not in instructions or not instructions["steps"]:
 #         print("No steps found in the instructions.")
-#         return False  # nada que hacer
+#         return False  # Nothing to do
 
 #     steps = instructions["steps"]
 
 #     if current_instruction_index >= len(steps):
-#         return False  # terminamos las instrucciones
+#         return False  # Finish instructions
 
 #     current_time = time.time()
 
 #     if is_moving:
-#         # Si estamos en movimiento, comprobamos si debemos detenernos
+#         # If we are moving, check if we must stop
 #         if current_time >= current_stop_time:
 #             stop()
 #             is_moving = False
 #             current_instruction_index += 1
-#             time.sleep(0.1)  # mini delay antes del siguiente paso
+#             time.sleep(0.1)  # mini delay before next step
 #         return True
 
 #     # Ejecutamos el siguiente paso
@@ -592,7 +592,7 @@ def execute_instructions(instructions):
 #         print(f"Unknown instruction: {step}")
 #         current_instruction_index += 1
 
-#     return True  # hay más pasos o estamos en movimiento
+#     return True  # are there more steps or are we in movement
 # ## END NOT synchronous execute instructions functions
 
 def main_program():
@@ -627,7 +627,7 @@ def main_program():
                 if not "error" in instructions:
                     execute_instructions(instructions)
         except Exception as e:
-            print("⚠️ Error en bucle principal:", e)
+            print("⚠️ Error in main loop:", e)
 
 
 main_program()
