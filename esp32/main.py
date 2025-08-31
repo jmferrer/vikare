@@ -201,20 +201,20 @@ def actual_time():
     hour   = "{:02d}".format(time.localtime()[3])
     minute = "{:02d}".format(time.localtime()[4])
     second = "{:02d}".format(time.localtime()[5])
-    # Vendrían bien los milisegundos aquí
+    # TODO: add milliseconds
 
     return(year + "-" + month + "-" + day + "-" + hour + "-" + minute + "-" + second)
 
-# Se inicializa fuera para no reiniciar en cada llamada
+# Initialized outside
 i2c = I2C(0, sda=Pin(22), scl=Pin(21), freq=400000)
 imu = MPU6050(i2c)
 
 def get_gyroscope():
-    # Lecturas crudas
+    # Read data
     gyro = imu.gyro
     accel = imu.accel
 
-    # Convertimos a valores legibles
+    # Convert to understandable values
     gyro_data = {
         'x': round(gyro.x, 2),
         'y': round(gyro.y, 2),
@@ -227,15 +227,15 @@ def get_gyroscope():
         'z': round(accel.z, 2)
     }
 
-    # Detectamos movimiento si hay rotación significativa (> threshold)
-    motion_threshold = 10  # deg/s, depende del ruido del sensor
+    # Detect movement if rotation is detected (> threshold)
+    motion_threshold = 10  # deg/s, depend on sensor noise
     is_moving = any(abs(v) > motion_threshold for v in gyro_data.values())
 
-    # Detectamos choque si hay aceleración anómala
+    # Detect collision if there is anomalous acceleration
     accel_magnitude = math.sqrt(accel.x**2 + accel.y**2 + accel.z**2)
-    shock_detected = accel_magnitude > 1.5  # >1g normalmente es un choque
+    shock_detected = accel_magnitude > 1.5  # >1g could be a collision
 
-    # Calcular inclinación (pitch y roll en grados)
+    # Calculate inclination (pitch and roll in degrees)
     pitch = math.atan2(accel.x, math.sqrt(accel.y**2 + accel.z**2)) * (180 / math.pi)
     roll = math.atan2(accel.y, math.sqrt(accel.x**2 + accel.z**2)) * (180 / math.pi)
 
@@ -312,10 +312,10 @@ def send_sensors_data(sensors_data, service_url):
             res = urequests.post(request_url, headers=headers, data=post_data)
             return res
         except Exception as e:
-            print("⚠️ Error al enviar datos al servidor:", e)
+            print("⚠️ Error sending data to the server:", e)
             return None
     except ValueError as e:
-        print("⚠️ Error al codificar sensores a JSON:", e)
+        print("⚠️ Error encoding sensors to JSON:", e)
         return None
 
 ## Run instructions
@@ -328,10 +328,10 @@ def get_instructions(service_url):
         try:
             return json.loads(res.text)
         except ValueError:
-            print("⚠️ Error: respuesta no es JSON válido")
+            print("⚠️ Error: response is not valid JSON")
             return None
     except Exception as e:
-        print("⚠️ Error al conectar con el servidor de instrucciones:", e)
+        print("⚠️ Error connecting to the instruction server:", e)
         return None
 
 def stop():
