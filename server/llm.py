@@ -203,7 +203,7 @@ def query_llm(sensors_data, image_path, current_goal, PROMPT=PROMPT):
     #print(response.message.content)
     #print("###### END LLM ######")
     
-    # Extraer solo el bloque JSON del contenido
+    # Extract only the JSON block from answer
     raw = response.message.content.splitlines()
     inside_block = False
     filtered_lines = []
