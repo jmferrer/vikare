@@ -630,7 +630,15 @@ def main_program():
             print("⚠️ Error in main loop:", e)
 
 
-main_program()
+# Boot-resilient runner: retry if setup fails on boot
+while True:
+    try:
+        main_program()
+        break
+    except Exception as e:
+        import sys
+        sys.print_exception(e)
+        time.sleep(5)
 
 
 
